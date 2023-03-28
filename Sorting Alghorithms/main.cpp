@@ -74,6 +74,5 @@ int main()
 	auto nanoint1 = duration_cast<nanoseconds>(t2 - t1);
 	cout << "\n\nCalculated time : (for "<<vec.size()<<" elements) " << nanoint1.count() << "ns" << endl;
 
-
 	return 0;
 }
