@@ -55,6 +55,26 @@ void SelectionSort(vector<int>& vec)
 
 }
 
+void InsertionSort(vector<int>& vec)
+{
+
+	for (int i = 1; i < vec.size(); i++)
+	{
+		int temp = vec[i];
+		int j = i - 1;
+
+		while (j >= 0 && temp < vec[j])
+		{
+			vec[j + 1] = vec[j];
+			j--;
+		}
+
+		vec[j + 1] = temp;
+	}
+
+}
+
+
 
 int main()
 {
@@ -108,8 +128,31 @@ int main()
 
 
 	auto nanoint2 = duration_cast<nanoseconds>(t4 - t3);
-	cout << "\n\nCalculated time : (for " << numbers.size() << " elements) " << nanoint1.count() << "ns" << endl;
+	cout << "\n\nCalculated time : (for " << numbers.size() << " elements) " << nanoint2.count() << "ns" << endl;
 
+
+	
+	/*
+					   Insertion Sort Alghorithm
+	*/
+
+	vector<int> v1;
+
+	for (int i = 100; i >= 0; i--)
+		v1.push_back(i);
+
+	cout << "\nBefore its sorted: ";
+	print_vector(v1);
+
+	auto t5 = high_resolution_clock::now();
+	InsertionSort(v1);
+	auto t6 = high_resolution_clock::now();
+
+	cout << "\n\nAfter its sorted: ";
+	print_vector(v1);
+
+	auto nanoint3 = duration_cast<nanoseconds>(t6 - t5);
+	cout << "\n\nCalculated time : (for " << numbers.size() << " elements) " << nanoint3.count() << "ns" << endl;
 
 	return 0;
 }
