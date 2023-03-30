@@ -147,6 +147,41 @@ void mergeSort(vector<int>& array)
 }
 
 
+
+int partition(vector<int>& vec, int start, int end)
+{
+	int pivot = vec[end];
+	int i{ start - 1 };
+
+	for (int j{ start }; j <= end - 1; j++) {
+
+		if (vec[j] < pivot)
+		{
+			i++;
+			swapp(vec[i], vec[j]);
+		}
+	}
+
+	i++;
+	swapp(vec[i], vec[end]);
+
+	return i;
+}
+
+void quickSort(vector<int>& vec, int start, int end)
+{
+	if (end <= start) return; // Base case
+
+	int pivot = partition(vec, start, end);
+	// Recursion Part
+
+	quickSort(vec, start, pivot - 1);
+	quickSort(vec, pivot + 1, end);
+
+}
+
+
+
 int main()
 {
 // Using vector class
@@ -254,6 +289,32 @@ int main()
 	cout << "\n\nCalculated time : (for " << array.size() << " elements) " << nanoint4.count() << "ns" << endl;
 
 
+
+	/*
+					   Quick sort Alghorithm
+	*/
+
+	
+
+	vector<int> v2;
+
+	for (int i = 100; i >= 0; i--)
+		v2.push_back(i);
+
+	cout << "\n\nBefore its sorted: ";
+	print_vector(v2);
+
+	auto t9 = high_resolution_clock::now();
+	quickSort(v2, 0, v2.size() - 1);
+	auto t10 = high_resolution_clock::now();
+
+	cout << "\n\nAfter its sorted: ";
+
+	print_vector(v2);
+
+
+	auto nanoint5 = duration_cast<nanoseconds>(t10 - t9);
+	cout << "\n\nCalculated time : (for " << v2.size() << " elements) " << nanoint5.count() << "ns" << endl;
 
 
 
