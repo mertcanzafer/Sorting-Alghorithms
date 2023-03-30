@@ -74,6 +74,77 @@ void InsertionSort(vector<int>& vec)
 
 }
 
+void merge(vector<int>& leftArray, vector<int>& rightArray, vector<int>& array)
+{
+	int leftsize = array.size() / 2;
+	int rightsize = array.size() - leftsize;
+	int i{ 0 }, l{ 0 }, r{ 0 };//indices
+
+	// Check the conditions for merging
+
+	while (l < leftsize && r < rightsize)
+	{
+		if (leftArray[l] < rightArray[r])
+		{
+			array[i] = leftArray[l];
+			i++;
+			l++;
+		}
+		else {
+			array[i] = rightArray[r];
+			i++;
+			r++;
+		}
+	}
+
+	while (l < leftsize)
+	{
+		array[i] = leftArray[l];
+		i++;
+		l++;
+	}
+	while (r < rightsize)
+	{
+		array[i] = rightArray[r];
+		i++;
+		r++;
+	}
+}
+
+void mergeSort(vector<int>& array)
+{
+	int length = array.size();
+	
+	if (length <= 1) return; // Base case
+
+	int mid = length / 2;
+
+	vector<int>leftArray(mid,0);
+	vector<int>rightArray(length - mid, 0);
+	
+	int i = 0;// Left Array index
+	int j = 0;// Rigth Array index
+
+	for (; i < length; i++)
+	{
+		if (i < mid)
+		{
+			leftArray[i] = array[i];
+		}
+		else {
+			rightArray[j] = array[i];
+			j++;
+		}
+
+	}
+
+	// Recursive Part
+
+	mergeSort(leftArray);
+	mergeSort(rightArray);
+	merge(leftArray, rightArray, array);
+
+}
 
 
 int main()
@@ -153,6 +224,38 @@ int main()
 
 	auto nanoint3 = duration_cast<nanoseconds>(t6 - t5);
 	cout << "\n\nCalculated time : (for " << numbers.size() << " elements) " << nanoint3.count() << "ns" << endl;
+
+	/*
+	
+	              Merge Sort Alghorithm
+				  It is faster than insertion, bubble, selection sort alghorithms
+				  However, It requires more places than those.
+	              Runtime Complexity : O(n log n)
+	              Space Complexity: O(n)
+	*/
+
+
+	vector<int> array;
+
+	for (int i = 100; i >= 0; i--)
+		array.push_back(i);
+
+	cout << "\n\nBefore its sorted: ";
+	print_vector(array);
+
+	auto t7 = high_resolution_clock::now();
+	mergeSort(array);
+	auto t8 = high_resolution_clock::now();
+
+	cout << "\n\nAfter its sorted: ";
+	print_vector(array);
+
+	auto nanoint4 = duration_cast<nanoseconds>(t8 - t7);
+	cout << "\n\nCalculated time : (for " << array.size() << " elements) " << nanoint4.count() << "ns" << endl;
+
+
+
+
 
 	return 0;
 }
