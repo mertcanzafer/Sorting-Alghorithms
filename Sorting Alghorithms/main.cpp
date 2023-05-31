@@ -1,6 +1,7 @@
 #include <iostream>
 #include<vector>
 #include <chrono>
+#include <string.h>
 using namespace std;
 
 using std::chrono::high_resolution_clock;
@@ -8,6 +9,12 @@ using std::chrono::duration_cast;
 using std::chrono::duration;
 using std::chrono::nanoseconds;
 
+const char* BubbleSortWeb = "https://www.geeksforgeeks.org/bubble-sort/";
+const char* SelectionSortWeb = "https://www.geeksforgeeks.org/selection-sort/";
+const char* InsertionSortWeb = "https://www.geeksforgeeks.org/insertion-sort/";
+const char* MergeSortWeb = "https://www.geeksforgeeks.org/merge-sort/";
+const char* QuickSortWeb = "https://www.geeksforgeeks.org/quick-sort/";
+const char* HeapSortWeb = "https://www.geeksforgeeks.org/heap-sort/";
 
 void print_vector(const vector<int>& vec)
 {
@@ -50,7 +57,7 @@ void SelectionSort(vector<int>& vec)
 				min = j;
 		}
 
-		swapp(vec[i],vec[min]);
+		swapp(vec[i], vec[min]);
 	}
 
 }
@@ -114,14 +121,14 @@ void merge(vector<int>& leftArray, vector<int>& rightArray, vector<int>& array)
 void mergeSort(vector<int>& array)
 {
 	int length = array.size();
-	
+
 	if (length <= 1) return; // Base case
 
 	int mid = length / 2;
 
-	vector<int>leftArray(mid,0);
+	vector<int>leftArray(mid, 0);
 	vector<int>rightArray(length - mid, 0);
-	
+
 	int i = 0;// Left Array index
 	int j = 0;// Rigth Array index
 
@@ -180,41 +187,70 @@ void quickSort(vector<int>& vec, int start, int end)
 
 }
 
+void heapIfy
+(
+	vector<int>& vec, 
+	int N, 
+	int i
+)
+{
+	int largest{ i };
 
+	int l{ 2 * i + 1 };
+
+	int r{ 2 * i + 2 };
+	
+	if (N > l && vec[l] > vec[largest])
+		largest = l;
+
+	if (r < N && vec[r] > vec[largest])
+		largest = r;
+
+	if (largest != i)
+	{
+		swapp(vec[i], vec[largest]);
+
+		heapIfy(vec, N, largest);
+	}
+
+}
+
+void heapSort(vector<int>& vec)
+{
+	size_t N{ vec.size() };
+
+	for (int i = N / 2 - 1; i >= 0; i--)
+		heapIfy(vec, N, i);
+
+	for (int i = N - 1; i > 0; i--)
+	{
+		swapp(vec[0], vec[i]);
+
+		heapIfy(vec, i, 0);
+	}
+
+}
 
 int main()
 {
-// Using vector class
-
+	// Using vector class
+	cout << "Bubble Sort Alghorithm:" << endl;
 	vector <int> vec;
 
 	for (int i = 100; i >= 0; i--)
 		vec.push_back(i);
-	
+
 	cout << "Before its sorted: " << endl;
 
 	print_vector(vec);
 
-//Mesures the certain function performance
-
-	auto t1 = high_resolution_clock::now();
 	BubbleSort(vec);
-	auto t2 = high_resolution_clock::now();
 
 	cout << "After its sorted: " << endl;
 	print_vector(vec);
 
-	auto nanoint1 = duration_cast<nanoseconds>(t2 - t1);
-	cout << "\n\nCalculated time : (for "<<vec.size()<<" elements) " << nanoint1.count() << "ns" << endl;
-
-	/*
-	                   Selection Sort Alghorithm
-	*/
-
-
+	cout << "\nSelection Sort Alghorithm:" << endl;
 	vector<int> numbers;
-	
-	// The worst case vector of integers.
 
 	for (int i = 100; i >= 0; i--)
 		numbers.push_back(i);
@@ -222,26 +258,13 @@ int main()
 	cout << "\n\nBefore its sorted: ";
 	print_vector(numbers);
 
-	//Mesures the certain function performance
-
-	auto t3 = high_resolution_clock::now();
 	SelectionSort(numbers);
-	auto t4 = high_resolution_clock::now();
 
 	cout << "\n\nAfter its sorted: ";
-	
+
 	print_vector(numbers);
 
-
-	auto nanoint2 = duration_cast<nanoseconds>(t4 - t3);
-	cout << "\n\nCalculated time : (for " << numbers.size() << " elements) " << nanoint2.count() << "ns" << endl;
-
-
-	
-	/*
-					   Insertion Sort Alghorithm
-	*/
-
+	cout << "\nInsertion Sort Alghorithm" << endl;
 	vector<int> v1;
 
 	for (int i = 100; i >= 0; i--)
@@ -250,26 +273,12 @@ int main()
 	cout << "\nBefore its sorted: ";
 	print_vector(v1);
 
-	auto t5 = high_resolution_clock::now();
 	InsertionSort(v1);
-	auto t6 = high_resolution_clock::now();
 
 	cout << "\n\nAfter its sorted: ";
 	print_vector(v1);
 
-	auto nanoint3 = duration_cast<nanoseconds>(t6 - t5);
-	cout << "\n\nCalculated time : (for " << numbers.size() << " elements) " << nanoint3.count() << "ns" << endl;
-
-	/*
-	
-	              Merge Sort Alghorithm
-				  It is faster than insertion, bubble, selection sort alghorithms
-				  However, It requires more places than those.
-	              Runtime Complexity : O(n log n)
-	              Space Complexity: O(n)
-	*/
-
-
+	cout << "\nMerge Sort Alghorithm" << endl;
 	vector<int> array;
 
 	for (int i = 100; i >= 0; i--)
@@ -278,24 +287,12 @@ int main()
 	cout << "\n\nBefore its sorted: ";
 	print_vector(array);
 
-	auto t7 = high_resolution_clock::now();
 	mergeSort(array);
-	auto t8 = high_resolution_clock::now();
-
+	
 	cout << "\n\nAfter its sorted: ";
 	print_vector(array);
 
-	auto nanoint4 = duration_cast<nanoseconds>(t8 - t7);
-	cout << "\n\nCalculated time : (for " << array.size() << " elements) " << nanoint4.count() << "ns" << endl;
-
-
-
-	/*
-					   Quick sort Alghorithm
-	*/
-
-	
-
+	cout << "\nQuick Sort Alghorithm" << endl;
 	vector<int> v2;
 
 	for (int i = 100; i >= 0; i--)
@@ -304,19 +301,27 @@ int main()
 	cout << "\n\nBefore its sorted: ";
 	print_vector(v2);
 
-	auto t9 = high_resolution_clock::now();
 	quickSort(v2, 0, v2.size() - 1);
-	auto t10 = high_resolution_clock::now();
 
 	cout << "\n\nAfter its sorted: ";
 
 	print_vector(v2);
+	
+	cout << "\nHeap Sort Alghorithm" << endl;
 
+	vector<int> v3;
 
-	auto nanoint5 = duration_cast<nanoseconds>(t10 - t9);
-	cout << "\n\nCalculated time : (for " << v2.size() << " elements) " << nanoint5.count() << "ns" << endl;
+	for (int i = 100; i >= 0; i--) v3.push_back(i);
 
+	cout << "\n\nBefore its sorted: ";
+	print_vector(v3);
+	
+	heapSort(v3);
 
+	cout << "\n\nAfter its sorted: ";
 
+	print_vector(v3);
+
+	cout << endl;
 	return 0;
 }
